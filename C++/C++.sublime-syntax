@@ -164,6 +164,7 @@ contexts:
   ## Common context layout
 
   global:
+    - include: attributes-cpp
     - match: '(?=\btemplate\b)'
       push:
         - include: template
@@ -301,6 +302,19 @@ contexts:
     - include: scope:source.c#numbers
 
   ## C++-specific contexts
+
+  # TODO:
+  # - Include in class scope
+  attributes-cpp:
+    - match: \[\s*\[
+      push:
+        - meta_scope: meta.attribute.c++
+        - match: \b(?:carries_dependency|deprecated|noreturn)\b
+          scope: constant.other.c++
+        - include: comments
+        - include: strings
+        - match: \]\s*\]
+          pop: true
 
   case-default:
     - match: '\b(default|case)\b'
